@@ -46,8 +46,7 @@ const SignIn = () => {
 
         <div className="passwordInputDiv">
           <input 
-          // type={showPassword ? 'text' : 'password'} 
-          type='password'
+          type={showPassword ? 'text' : 'password'} 
           className='passwordInput' 
           placeholder='Password' 
           id='password'
