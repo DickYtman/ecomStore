@@ -3,7 +3,9 @@ import { Link, useNavigate } from 'react-router-dom'
 //@ts-ignore
 import {ReactComponent as ArrowRightIcon} from '../assets/svg/keyboardArrowRightIcon.svg'
 //@ts-ignore
-import visibilityIcon from '../assets/svg/visibilityIcon.svg'
+import visibilityIcon from '../assets/svg/visibilityIcon.svg' 
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth' 
+import { db } from '../firebase.config'
 
 interface FormDataProps{
   name: string;
@@ -29,6 +31,26 @@ const SignUp = () => {
     }))
   }
 
+  const handleSubmit = async(ev:any) => {
+    ev.preventDefault()
+
+    try {
+      const auth:any = getAuth()
+
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+
+      const user = userCredential.user
+
+      updateProfile(auth.currentUser, {
+        displayName: name,
+      })
+
+      navigate('/')
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <>
     <div className="pageContainer">
@@ -36,7 +58,7 @@ const SignUp = () => {
         <p className="pageHeader">Welcome back</p>
       </header>
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <input 
         type="text" 
         id="name" 
